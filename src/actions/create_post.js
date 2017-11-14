@@ -12,13 +12,3 @@ export function fetchPosts(){
     payload: request
   }
 }
-
-export function createPost(post){
-  const url = `${ROOT_URL}/posts${API_KEY}`
-  const request = axios.post(url, post)
-
-  return {
-    type: 'CREATE_POST',
-    payload: request
-  }
-}
