@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
+import { Link } from 'react-router-dom'
 
 import { createPost } from '../actions/index'
 
@@ -24,7 +25,9 @@ class PostsNew extends React.Component{
   }
 
   onSubmit(values){
-    this.props.createPost(values)
+    this.props.createPost(values, () => {
+      this.props.history.push('/')
+    })
   }
 
   render(){
@@ -47,6 +50,7 @@ class PostsNew extends React.Component{
           label="Content"
         />
         <button type="submit" className="btn btn-primary">Submit</button>
+        <Link to="/" className="btn btn-danger">Cancel</Link>
       </form>
     )
   }
@@ -73,4 +77,4 @@ function mapDispatchToProps(){
 export default reduxForm({
   validate,
   form: 'PostsNewForm'
-})(PostsNew)
+})(connect(null, { createPost })(PostsNew))
