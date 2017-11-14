@@ -7,22 +7,30 @@ import { createPost } from '../actions/index'
 class PostsNew extends React.Component{
 
   renderField(field){
+    const className = `form-group ${field.meta.touched && field.meta.error ? 'has-danger' : ''}`
     return(
-      <div className="form-group">
+      <div className={className}>
         <label>{field.label}</label>
         <input
           className="form-control"
           type="text"
           {...field.input}
         />
-        {field.meta.error}
+        <div className="text-help">
+          {field.meta.touched ? field.meta.error : ''}
+        </div>
       </div>
     )
   }
 
+  onSubmit(values){
+    this.props.createPost(values)
+  }
+
   render(){
+    const { handleSubmit } = this.props
     return(
-      <form>
+      <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
         <Field
           name="title"
           component={this.renderField}
@@ -38,6 +46,7 @@ class PostsNew extends React.Component{
           component={this.renderField}
           label="Content"
         />
+        <button type="submit" className="btn btn-primary">Submit</button>
       </form>
     )
   }
@@ -49,12 +58,16 @@ function validate(values){
     errors.title = "Enter a Title"
   }
   if(!values.categories){
-    errors.title = "Enter Categories"
+    errors.categories = "Enter Categories"
   }
   if(!values.content){
-    errors.title = "Enter some content"
+    errors.content = "Enter some content"
   }
   return errors
+}
+
+function mapDispatchToProps(){
+
 }
 
 export default reduxForm({
